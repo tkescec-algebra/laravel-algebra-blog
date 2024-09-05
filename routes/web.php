@@ -11,5 +11,12 @@ Route::get('/', function () {
 });
 
 
-Route::get('auth/login', [AuthController::class, 'login'])->name('login');
+Route::get('auth/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
 Route::post('auth/login', [AuthController::class, 'authenticate'])->name('post.login');
+
+Route::get('auth/register', [AuthController::class, 'showRegister'])->name('register')->middleware('guest');
+Route::post('auth/register', [AuthController::class, 'register'])->name('post.register');
+
+Route::get('dashboard', function () {
+    dd(auth()->user());
+})->middleware('auth')->name('dashboard');

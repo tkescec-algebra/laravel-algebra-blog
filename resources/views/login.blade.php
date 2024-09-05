@@ -2,6 +2,9 @@
 
 @section('content')
     <h1>Login</h1>
+    @error('credentials')
+        <p>{{ $message }}</p>
+    @enderror
     <form method="POST" action="{{ route('post.login') }}">
         @csrf
         <div>
@@ -20,4 +23,5 @@
         </div>
         <button type="submit">Login</button>
     </form>
+    <p>Don't have an account? <a href="{{ route('register') }}">Register</a></p>
 @endsection
