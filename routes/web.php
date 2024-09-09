@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Middleware\AuthMiddleware;
 use App\Models\Post;
+use App\Models\Role;
 use App\Models\User;
-use Illuminate\Container\Attributes\Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,12 +14,19 @@ Route::get('/', function () {
 });
 
 
-Route::get('auth/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
+Route::get('auth/login', [AuthController::class, 'login'])->name('showLogin')->middleware('guest');
 Route::post('auth/login', [AuthController::class, 'authenticate'])->name('post.login');
 
 Route::get('auth/register', [AuthController::class, 'showRegister'])->name('register')->middleware('guest');
 Route::post('auth/register', [AuthController::class, 'register'])->name('post.register');
 
-Route::get('dashboard', function () {
-    dd(auth()->user());
-})->middleware('auth')->name('dashboard');
+Route::group(['middleware' => AuthMiddleware::class], function () {
+    Route::get('auth/logout', fn() => Auth::logout())->name('logout');
+    Route::get('dashboard', function () {
+        dd(request());
+    })->name('dashboard');
+});
+
+Route::get('test', function () {
+    Log::info('Test log');
+});

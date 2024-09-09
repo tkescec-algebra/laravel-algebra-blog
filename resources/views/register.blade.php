@@ -4,7 +4,7 @@
 
 @section('content')
     <h1>Register</h1>
-    @error('credentials')
+    @error(['credentials', 'error'])
         <p>{{ $message }}</p>
     @enderror
     <form method="POST" action="{{ route('post.register') }}">
