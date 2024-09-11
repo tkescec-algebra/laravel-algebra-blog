@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layout', ['admin' => false])
 
 @section('title', 'Register')
 
@@ -45,4 +45,5 @@
         </div>
         <button type="submit">Register</button>
     </form>
-    <p>Already have an account? <a href="{{ route('login') }}">Login</a></p>
+    <p>Already have an account? <a href="{{ route('showLogin') }}">Login</a></p>
+@endsection

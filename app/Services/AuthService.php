@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -15,9 +16,9 @@ class AuthService
         $credentials = $request->safe(['email', 'password']);
 
         if (Auth::attempt($credentials)) {
-           $request->session()->regenerate();
+            $request->session()->regenerate();
 
-            return redirect()->intended('dashboard');
+            return redirect()->intended(route('dashboard'));
         }
 
         return back()->withErrors([
@@ -27,7 +28,7 @@ class AuthService
 
     public function register(FormRequest $request)
     {
-        try{
+        try {
             $data = $request->safe(['first_name', 'last_name', 'email', 'password']);
 
             $user = User::create($data);
@@ -36,12 +37,23 @@ class AuthService
 
             Auth::login($user);
 
-            return redirect()->intended('dashboard');
+            return redirect()->intended(route('dashboard'));
         } catch (\Exception $e) {
             Log::error($e);
             return back()->withErrors([
                 'error' => 'An error occurred while registering the user.',
             ]);
         }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect()->route('home');
     }
 }

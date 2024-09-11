@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layout', ['admin' => false])
 
 @section('content')
     <h1>Welcome to Laravel Blog!</h1>
