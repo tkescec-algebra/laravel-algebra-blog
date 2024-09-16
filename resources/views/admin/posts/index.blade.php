@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($posts as $post)
+                @forelse ($posts as $post)
                     <tr>
                         <td>{{ $post->title }}</td>
                         <td>{{ $post->user->first_name }} {{ $post->user->last_name }}</td>
@@ -25,7 +25,11 @@
 
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="4">No posts found.</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

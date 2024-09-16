@@ -31,7 +31,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.posts.create');
     }
 
     /**
@@ -39,7 +39,11 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+        if (!$this->postService->storePost($request)) {
+            return redirect()->back()->with('post-created', 'Post not created');
+        }
+
+        return redirect()->route('posts.index');
     }
 
     /**
