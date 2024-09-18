@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\Roles;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
@@ -32,7 +33,14 @@ class AuthService
             $data = $request->safe(['first_name', 'last_name', 'email', 'password']);
 
             $user = User::create($data);
-            $role = Role::where('name', 'User')->first()->getKey();
+            $role =
+                Role::where(
+                    'name',
+                    Roles::USER->value
+                )
+                ->first()
+                ->getKey();
+
             $user->roles()->attach($role);
 
             Auth::login($user);
