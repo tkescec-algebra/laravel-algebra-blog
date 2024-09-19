@@ -13,14 +13,20 @@ class PostService
 {
     public function getAllPosts()
     {
-        if(auth()->user()->cannot('viewAny', Post::class)) {
-            return Post::with('user')
-                ->where('user_id', auth()->id())
-                ->orderBy('created_at', 'desc')
-                ->paginate(5);
-        }
+        try {
+            if(auth()->user()->cannot('viewAny', Post::class)) {
+                return Post::with('user')
+                    ->where('user_id', auth()->id())
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(5);
+            }
 
-        return Post::with('user')->orderBy('created_at', 'desc')->paginate(5);
+            return Post::with('user')->orderBy('created_at', 'desc')->paginate(5);
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return null;
+        }
     }
 
     public function storePost(FormRequest $request)

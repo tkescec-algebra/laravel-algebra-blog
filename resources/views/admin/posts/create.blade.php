@@ -13,7 +13,7 @@
         <form method="post" action="{{ route('posts.store') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label for="title">Title</label>
+                <label for="title">{{  __('forms.title') }}</label>
                 <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
                 @error('title')
                     <div class="alert alert-danger">{{ $message }}</div>

@@ -33,5 +33,6 @@ Route::group(['middleware' => AuthMiddleware::class], function () {
 });
 
 Route::get('test', function () {
-    dd(AuthController::class);
+    $test = [];
+    dd(collect() == null);
 });

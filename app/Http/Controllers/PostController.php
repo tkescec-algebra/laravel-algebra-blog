@@ -6,6 +6,8 @@ use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Services\PostService;
+use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -21,7 +23,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = $this->postService->getAllPosts();
+        if(!$posts = $this->postService->getAllPosts()) {
+            abort(400);
+        }
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -31,6 +35,9 @@ class PostController extends Controller
      */
     public function create()
     {
+        // TODO: uncomment this line if method create is changed in the policy
+        // Gate::authorize('create', Post::class);
+
         return view('admin.posts.create');
     }
 
@@ -39,6 +46,9 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
+        // TODO: uncomment this line if method create is changed in the policy
+        // Gate::authorize('create', Post::class);
+
         if (!$this->postService->storePost($request)) {
             return redirect()->back()->with('post-created', 'Post not created');
         }
@@ -51,7 +61,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        Gate::authorize('view', $post);
+        dd($post);
+        //return view('admin.posts.show', compact('post'));
     }
 
     /**

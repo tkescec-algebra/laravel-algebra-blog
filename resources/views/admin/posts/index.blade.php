@@ -37,7 +37,7 @@
             </tbody>
         </table>
         <div class="mx-auto my-2">
-            {{ $posts->links() }}
+            {{-- {{ $posts->links() }} --}}
         </div>
     </div>
 @endsection
